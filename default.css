@@ -1,4 +1,39 @@
 body {
     background-color: #282c34;
-    color: white;
+}
+button {
+    color: #20b2aa;
+    font-size: large;
+}
+.mainContainer {
+    display: flex;
+    justify-content: center;
+}
+.largeContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(120, 131, 155, .2);
+    width: 400px;
+    height: 500px;
+    padding-top: 50px;
+    border-radius: 10px;
+}
+.smallContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(120, 131, 155, .2);
+    width: 95%;
+    height: 600px;
+    padding-top: 50px;
+    border-radius: 10px;
+}
+.buttonContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 90%;
+    height: 10%;
+    margin-bottom: 30px;
 }

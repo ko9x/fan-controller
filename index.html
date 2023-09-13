@@ -1,17 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fan Controller</title>
-  <link rel="stylesheet" href="default.css" />
-  <script src="main.js" type="module"></script>
-</head>
-<body>
-  <h1>Fan Controller</h1>
-  <button id="lightOn">Light On</button>
-  <button id="lightOff">Light Off</button>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fan Controller</title>
+    <link rel="stylesheet" href="default.css" />
+    <script src="main.js" type="module"></script>
+  </head>
+  <body>
+    <div class="mainContainer">
+      <div id="container">
+        <div class="buttonContainer" style="grid-template-columns: repeat(2, 1fr);">
+          <button type="button" id="lightOn">Light On</button>
+          <button type="button" id="lightOff">Light Off</button>
+        </div>
+        <div class="buttonContainer" style="grid-template-columns: repeat(3, 1fr);">
+          <button type="button" id="fanHigh">Fan High</button>
+          <button type="button" id="fanMedium">Fan Medium</button>
+          <button type="button" id="fanLow">Fan Low</button>
+        </div>
+        <div class="buttonContainer" style="grid-template-columns: repeat(1, 1fr);">
+          <button type="button" id="fanOff">Fan Off</button>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
 <!DOCTYPE html>
