@@ -17,9 +17,31 @@ const height =
 // Create a variable to differentiate between large and small screens
 const isSmall = width < 750;
 
+let lightStatus = await checkLightState();
+
 handleLayout();
 
+async function checkLightState() {
+  let response = await fetch(`${API}/toggle/7`);
+
+  let data = await response.json();
+
+  console.log('data', data); //@DEBUG
+
+  if(data === 1) {
+    lightOn.classList.add('isActive');
+    lightOff.classList.remove('isActive');
+    return "on";
+  }
+  if(data === 0) {
+    lightOff.classList.add('isActive');
+    lightOn.classList.remove('isActive');
+    return "off";
+  }
+}
+
 function handleLayout() {
+    console.log('lightStatus', lightStatus); //@DEBUG
     if(!isSmall) {
         container.classList.add('largeContainer');
     }
@@ -43,11 +65,12 @@ async function turnLightOn(config) {
 
   let data = await response.json();
 
-  if (data?.success) {
-    console.log('data', data); //@DEBUG
-  } else {
-    console.log('no data', ); //@DEBUG
+  console.log('data', data); //@DEBUG
+
+  if(data !== null) {
+    checkLightState();
   }
+
 }
 
 async function turnLightOff(config) {
@@ -55,9 +78,9 @@ async function turnLightOff(config) {
 
   let data = await response.json();
 
-  if (data?.success) {
-    console.log('data', data); //@DEBUG
-  } else {
-    console.log('no data', ); //@DEBUG
+  console.log('data', data); //@DEBUG
+
+  if(data !== null) {
+    checkLightState();
   }
 }
