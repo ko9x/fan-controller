@@ -26,31 +26,31 @@ const isSmall = width < 750;
 handleLayout();
 
 function handleLayout() {
-    if(!isSmall) {
-        container.classList.add('largeContainer');
-    }
-    if(isSmall) {
-        container.classList.add('smallContainer');
-    }
+  if (!isSmall) {
+    container.classList.add("largeContainer");
+  }
+  if (isSmall) {
+    container.classList.add("smallContainer");
+  }
 }
 
 let connectionStatus = await checkConnection();
 
 async function checkConnection() {
-    information.innerHTML = 'Connecting...';
+  information.innerHTML = "Connecting...";
 
-    try{
-        let response = await fetch(API);
-        let data = await response.json();
-        information.classList.add('isActive');
-        information.innerHTML = "Connected";
-        return;
-    } catch(error) {
-        information.innerHTML = "Connection Failed"
-        information.classList.remove('isActive');
-        information.classList.add('isError');
-        return;
-    }
+  try {
+    let response = await fetch(API);
+    let data = await response.json();
+    information.classList.add("isActive");
+    information.innerHTML = "Connected";
+    return;
+  } catch (error) {
+    information.innerHTML = "Connection Failed";
+    information.classList.remove("isActive");
+    information.classList.add("isError");
+    return;
+  }
 }
 
 let lightStatus = await checkLightState();
@@ -59,14 +59,14 @@ async function checkLightState() {
   let response = await fetch(`${API}/toggle/7`);
   let data = await response.json();
 
-  if(data === 1) {
-    lightOn.classList.add('isActive');
-    lightOff.classList.remove('isActive');
+  if (data === 1) {
+    lightOn.classList.add("isActive");
+    lightOff.classList.remove("isActive");
     return "on";
   }
-  if(data === 0) {
-    lightOff.classList.add('isActive');
-    lightOn.classList.remove('isActive');
+  if (data === 0) {
+    lightOff.classList.add("isActive");
+    lightOn.classList.remove("isActive");
     return "off";
   }
 }
@@ -74,34 +74,34 @@ async function checkLightState() {
 let fanStatus = await checkFanState();
 
 async function checkFanState() {
-    let pin15Status = await checkFanPin15();
-    let pin13Status = await checkFanPin13();
-    let pin11Status = await checkFanPin11();
+  let pin15Status = await checkFanPin15();
+  let pin13Status = await checkFanPin13();
+  let pin11Status = await checkFanPin11();
 
-    if(pin15Status === "on" && (pin13Status === "off" && pin11Status === "off")) {
-        fanHigh.classList.add('isActive');
-        fanMedium.classList.remove('isActive');
-        fanLow.classList.remove('isActive');
-        fanOff.classList.remove('isActive');
-    }
-    if((pin13Status === "on" && pin11Status === "on") && (pin15Status === "off")) {
-        fanHigh.classList.remove('isActive');
-        fanMedium.classList.add('isActive');
-        fanLow.classList.remove('isActive');
-        fanOff.classList.remove('isActive');
-    }
-    if(pin11Status === "on" && (pin13Status === "off" && pin15Status === "off")) {
-        fanHigh.classList.remove('isActive');
-        fanMedium.classList.remove('isActive');
-        fanLow.classList.add('isActive');
-        fanOff.classList.remove('isActive');
-    }
-    if(pin15Status === "off" && pin13Status === "off" && pin11Status === "off") {
-        fanHigh.classList.remove('isActive');
-        fanMedium.classList.remove('isActive');
-        fanLow.classList.remove('isActive');
-        fanOff.classList.add('isActive');
-    }
+  if (pin15Status === "on" && pin13Status === "off" && pin11Status === "off") {
+    fanHigh.classList.add("isActive");
+    fanMedium.classList.remove("isActive");
+    fanLow.classList.remove("isActive");
+    fanOff.classList.remove("isActive");
+  }
+  if (pin13Status === "on" && pin11Status === "on" && pin15Status === "off") {
+    fanHigh.classList.remove("isActive");
+    fanMedium.classList.add("isActive");
+    fanLow.classList.remove("isActive");
+    fanOff.classList.remove("isActive");
+  }
+  if (pin11Status === "on" && pin13Status === "off" && pin15Status === "off") {
+    fanHigh.classList.remove("isActive");
+    fanMedium.classList.remove("isActive");
+    fanLow.classList.add("isActive");
+    fanOff.classList.remove("isActive");
+  }
+  if (pin15Status === "off" && pin13Status === "off" && pin11Status === "off") {
+    fanHigh.classList.remove("isActive");
+    fanMedium.classList.remove("isActive");
+    fanLow.classList.remove("isActive");
+    fanOff.classList.add("isActive");
+  }
 }
 
 // ****** Light Control Section ***************************************
@@ -112,7 +112,7 @@ lightOn.addEventListener("click", () => {
 });
 
 lightOff.addEventListener("click", () => {
-    turnLightOff();
+  turnLightOff();
   console.log("Light Off Clicked!");
 });
 
@@ -120,17 +120,16 @@ async function turnLightOn(config) {
   let response = await fetch(`${API}/activate/7`);
   let data = await response.json();
 
-  if(data !== null) {
+  if (data !== null) {
     checkLightState();
   }
-
 }
 
 async function turnLightOff(config) {
   let response = await fetch(`${API}/deactivate/7`);
   let data = await response.json();
 
-  if(data !== null) {
+  if (data !== null) {
     checkLightState();
   }
 }
@@ -138,167 +137,167 @@ async function turnLightOff(config) {
 // ****** Fan Control Section ***************************************
 
 fanOff.addEventListener("click", () => {
-    turnFanOff();
-    console.log("Fan Off Clicked!");
-  });
+  turnFanOff();
+  console.log("Fan Off Clicked!");
+});
 
 fanLow.addEventListener("click", () => {
-    setFanLow();
-    console.log("Fan Low Clicked!");
-  });
+  setFanLow();
+  console.log("Fan Low Clicked!");
+});
 
 fanMedium.addEventListener("click", () => {
-    setFanMedium();
-    console.log("Fan Medium Clicked!");
-  });
+  setFanMedium();
+  console.log("Fan Medium Clicked!");
+});
 
 fanHigh.addEventListener("click", () => {
-    setFanHigh();
-    console.log("Fan High Clicked!");
-  });
+  setFanHigh();
+  console.log("Fan High Clicked!");
+});
 
 async function turnFanOff() {
-    let pin15IsOff = await deactivatePin15();
-    let pin13IsOff = await deactivatePin13();
-    let pin11IsOff = await deactivatePin11();
+  let pin15IsOff = await deactivatePin15();
+  let pin13IsOff = await deactivatePin13();
+  let pin11IsOff = await deactivatePin11();
 
-    if(pin15IsOff === "off" && pin13IsOff === "off" && pin11IsOff === "off") {
-        checkFanState();
-    } else {
-        return;
-    }
+  if (pin15IsOff === "off" && pin13IsOff === "off" && pin11IsOff === "off") {
+    checkFanState();
+  } else {
+    return;
+  }
 }
 
 async function setFanLow() {
-    let pin15IsOff = await deactivatePin15();
-    let pin13IsOff = await deactivatePin13();
+  let pin15IsOff = await deactivatePin15();
+  let pin13IsOff = await deactivatePin13();
 
-    if((pin15IsOff === 'off') && (pin13IsOff === 'off')) {
-        await activatePin11();
-    } else {
-        return;
-    }
-    let pin11IsOn = await checkFanPin11();
+  if (pin15IsOff === "off" && pin13IsOff === "off") {
+    await activatePin11();
+  } else {
+    return;
+  }
+  let pin11IsOn = await checkFanPin11();
 
-    if((pin15IsOff == "off" && pin13IsOff === "off") && pin11IsOn === "on") {
-        await checkFanState();
-    }
+  if (pin15IsOff == "off" && pin13IsOff === "off" && pin11IsOn === "on") {
+    await checkFanState();
+  }
 }
 
 async function setFanMedium() {
-    let pin15IsOff = await deactivatePin15();
+  let pin15IsOff = await deactivatePin15();
 
-    if(pin15IsOff === 'off') {
-        await activatePin11();
-        await activatePin13();
-    } else {
-        return;
-    }
-    let pin11IsOn = await checkFanPin11();
-    let pin13IsOn = await checkFanPin13();
+  if (pin15IsOff === "off") {
+    await activatePin11();
+    await activatePin13();
+  } else {
+    return;
+  }
+  let pin11IsOn = await checkFanPin11();
+  let pin13IsOn = await checkFanPin13();
 
-    if(pin15IsOff == "off" && (pin13IsOn === "on" && pin11IsOn === "on")) {
-        await checkFanState();
-    }
+  if (pin15IsOff == "off" && pin13IsOn === "on" && pin11IsOn === "on") {
+    await checkFanState();
+  }
 }
 
 async function setFanHigh() {
-    let pin13IsOff = await deactivatePin13();
-    let pin11IsOff = await deactivatePin11();
+  let pin13IsOff = await deactivatePin13();
+  let pin11IsOff = await deactivatePin11();
 
-    if(pin13IsOff === "off" && pin11IsOff === "off") {
-        await activatePin15();
-    } else {
-        return;
-    }
-    let pin15IsOn = await checkFanPin15();
+  if (pin13IsOff === "off" && pin11IsOff === "off") {
+    await activatePin15();
+  } else {
+    return;
+  }
+  let pin15IsOn = await checkFanPin15();
 
-    if(pin15IsOn == "on" && (pin13IsOff === "off" && pin11IsOff === "off")) {
-        await checkFanState();
-    }
+  if (pin15IsOn == "on" && pin13IsOff === "off" && pin11IsOff === "off") {
+    await checkFanState();
+  }
 }
 
 async function checkFanPin15() {
-    let response = await fetch(`${API}/toggle/15`);
-    let data = await response.json();
+  let response = await fetch(`${API}/toggle/15`);
+  let data = await response.json();
 
-    if(data === 0) {
-        return "off";
-    }
-    if(data === 1) {
-        return "on";
-    }
+  if (data === 0) {
+    return "off";
+  }
+  if (data === 1) {
+    return "on";
+  }
 }
 
 async function checkFanPin13() {
-    let response = await fetch(`${API}/toggle/13`);
-    let data = await response.json();
+  let response = await fetch(`${API}/toggle/13`);
+  let data = await response.json();
 
-    if(data === 0) {
-        return "off";
-    }
-    if(data === 1) {
-        return "on";
-    }
+  if (data === 0) {
+    return "off";
+  }
+  if (data === 1) {
+    return "on";
+  }
 }
 
 async function checkFanPin11() {
-    let response = await fetch(`${API}/toggle/11`);
-    let data = await response.json();
+  let response = await fetch(`${API}/toggle/11`);
+  let data = await response.json();
 
-    if(data === 0) {
-        return "off";
-    }
-    if(data === 1) {
-        return "on";
-    }
+  if (data === 0) {
+    return "off";
+  }
+  if (data === 1) {
+    return "on";
+  }
 }
 
 async function activatePin15() {
-    let response = await fetch(`${API}/activate/15`);
-    let data = await response.json();
+  let response = await fetch(`${API}/activate/15`);
+  let data = await response.json();
 
-    if(data === 1) {
-        return "on";
-    }
+  if (data === 1) {
+    return "on";
+  }
 }
 async function activatePin13() {
-    let response = await fetch(`${API}/activate/13`);
-    let data = await response.json();
+  let response = await fetch(`${API}/activate/13`);
+  let data = await response.json();
 
-    if(data === 1) {
-        return "on";
-    }
+  if (data === 1) {
+    return "on";
+  }
 }
 async function activatePin11() {
-    let response = await fetch(`${API}/activate/11`);
-    let data = await response.json();
+  let response = await fetch(`${API}/activate/11`);
+  let data = await response.json();
 
-    if(data === 1) {
-        return "on";
-    }
+  if (data === 1) {
+    return "on";
+  }
 }
 async function deactivatePin15() {
-    let response = await fetch(`${API}/deactivate/15`);
-    let data = await response.json();
+  let response = await fetch(`${API}/deactivate/15`);
+  let data = await response.json();
 
-    if(data === 0) {
-        return "off";
-    }
+  if (data === 0) {
+    return "off";
+  }
 }
 async function deactivatePin13() {
-    let response = await fetch(`${API}/deactivate/13`);
-    let data = await response.json();
+  let response = await fetch(`${API}/deactivate/13`);
+  let data = await response.json();
 
-    if(data === 0) {
-        return "off";
-    }
+  if (data === 0) {
+    return "off";
+  }
 }
 async function deactivatePin11() {
-    let response = await fetch(`${API}/deactivate/11`);
-    let data = await response.json();
+  let response = await fetch(`${API}/deactivate/11`);
+  let data = await response.json();
 
-    if(data === 0) {
-        return "off";
-    }
+  if (data === 0) {
+    return "off";
+  }
 }
