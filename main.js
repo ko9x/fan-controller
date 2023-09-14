@@ -7,6 +7,7 @@ const fanHigh = document.getElementById("fanHigh");
 const fanMedium = document.getElementById("fanMedium");
 const fanLow = document.getElementById("fanLow");
 const fanOff = document.getElementById("fanOff");
+const information = document.getElementById("information");
 
 // Constants for height and width
 const width =
@@ -33,14 +34,30 @@ function handleLayout() {
     }
 }
 
+let connectionStatus = await checkConnection();
+
+async function checkConnection() {
+    information.innerHTML = 'Connecting...';
+
+    try{
+        let response = await fetch(API);
+        let data = await response.json();
+        information.classList.add('isActive');
+        information.innerHTML = "Connected";
+        return;
+    } catch(error) {
+        information.innerHTML = "Connection Failed"
+        information.classList.remove('isActive');
+        information.classList.add('isError');
+        return;
+    }
+}
+
 let lightStatus = await checkLightState();
 
 async function checkLightState() {
   let response = await fetch(`${API}/toggle/7`);
-
   let data = await response.json();
-
-  console.log('data', data); //@DEBUG
 
   if(data === 1) {
     lightOn.classList.add('isActive');
@@ -60,10 +77,6 @@ async function checkFanState() {
     let pin15Status = await checkFanPin15();
     let pin13Status = await checkFanPin13();
     let pin11Status = await checkFanPin11();
-
-    console.log('pin15', pin15Status ); //@DEBUG
-    console.log('pin13', pin13Status ); //@DEBUG
-    console.log('pin11', pin11Status ); //@DEBUG
 
     if(pin15Status === "on" && (pin13Status === "off" && pin11Status === "off")) {
         fanHigh.classList.add('isActive');
@@ -105,10 +118,7 @@ lightOff.addEventListener("click", () => {
 
 async function turnLightOn(config) {
   let response = await fetch(`${API}/activate/7`);
-
   let data = await response.json();
-
-  console.log('data', data); //@DEBUG
 
   if(data !== null) {
     checkLightState();
@@ -118,10 +128,7 @@ async function turnLightOn(config) {
 
 async function turnLightOff(config) {
   let response = await fetch(`${API}/deactivate/7`);
-
   let data = await response.json();
-
-  console.log('data', data); //@DEBUG
 
   if(data !== null) {
     checkLightState();
@@ -158,7 +165,7 @@ async function turnFanOff() {
     if(pin15IsOff === "off" && pin13IsOff === "off" && pin11IsOff === "off") {
         checkFanState();
     } else {
-        console.log('something went wrong', ); //@DEBUG
+        return;
     }
 }
 
@@ -169,7 +176,7 @@ async function setFanLow() {
     if((pin15IsOff === 'off') && (pin13IsOff === 'off')) {
         await activatePin11();
     } else {
-        console.log('something went wrong', ); //@DEBUG
+        return;
     }
     let pin11IsOn = await checkFanPin11();
 
@@ -185,7 +192,7 @@ async function setFanMedium() {
         await activatePin11();
         await activatePin13();
     } else {
-        console.log('something went wrong', ); //@DEBUG
+        return;
     }
     let pin11IsOn = await checkFanPin11();
     let pin13IsOn = await checkFanPin13();
@@ -202,7 +209,7 @@ async function setFanHigh() {
     if(pin13IsOff === "off" && pin11IsOff === "off") {
         await activatePin15();
     } else {
-        console.log('something went wrong', ); //@DEBUG
+        return;
     }
     let pin15IsOn = await checkFanPin15();
 
@@ -213,10 +220,7 @@ async function setFanHigh() {
 
 async function checkFanPin15() {
     let response = await fetch(`${API}/toggle/15`);
-
     let data = await response.json();
-
-    console.log('data', data); //@DEBUG
 
     if(data === 0) {
         return "off";
@@ -228,10 +232,7 @@ async function checkFanPin15() {
 
 async function checkFanPin13() {
     let response = await fetch(`${API}/toggle/13`);
-
     let data = await response.json();
-
-    console.log('data', data); //@DEBUG
 
     if(data === 0) {
         return "off";
@@ -243,10 +244,7 @@ async function checkFanPin13() {
 
 async function checkFanPin11() {
     let response = await fetch(`${API}/toggle/11`);
-
     let data = await response.json();
-
-    console.log('data', data); //@DEBUG
 
     if(data === 0) {
         return "off";
@@ -258,7 +256,6 @@ async function checkFanPin11() {
 
 async function activatePin15() {
     let response = await fetch(`${API}/activate/15`);
-
     let data = await response.json();
 
     if(data === 1) {
@@ -267,7 +264,6 @@ async function activatePin15() {
 }
 async function activatePin13() {
     let response = await fetch(`${API}/activate/13`);
-
     let data = await response.json();
 
     if(data === 1) {
@@ -276,7 +272,6 @@ async function activatePin13() {
 }
 async function activatePin11() {
     let response = await fetch(`${API}/activate/11`);
-
     let data = await response.json();
 
     if(data === 1) {
@@ -285,7 +280,6 @@ async function activatePin11() {
 }
 async function deactivatePin15() {
     let response = await fetch(`${API}/deactivate/15`);
-
     let data = await response.json();
 
     if(data === 0) {
@@ -294,7 +288,6 @@ async function deactivatePin15() {
 }
 async function deactivatePin13() {
     let response = await fetch(`${API}/deactivate/13`);
-
     let data = await response.json();
 
     if(data === 0) {
@@ -303,7 +296,6 @@ async function deactivatePin13() {
 }
 async function deactivatePin11() {
     let response = await fetch(`${API}/deactivate/11`);
-
     let data = await response.json();
 
     if(data === 0) {

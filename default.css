@@ -1,9 +1,13 @@
 body {
     background-color: #282c34;
+    color: white;
 }
 button {
     color: #282c34;
     font-size: large;
+}
+.isError {
+    color: red;
 }
 .isActive {
     color: #20b2aa
